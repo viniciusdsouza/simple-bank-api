@@ -6,9 +6,27 @@
 package db
 
 import (
+	"context"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+	_ "github.com/lib/pq"
 )
 
-func TestQueries_ListAccounts(t *testing.T) {
-	
+func TestCreateAccount(t *testing.T) {
+	cmd := CreateAccountParams{
+		Owner: "tom",
+		Balance: "100",
+		Currency: "BRL",
+	}
+	account, err := testQueries.CreateAccount(context.Background(), cmd)
+	require.NoError(t, err)
+	require.NotEmpty(t, account)
+
+	require.Equal(t, cmd.Owner, account.Owner)
+	require.Equal(t, cmd.Balance, account.Balance)
+	require.Equal(t, cmd.Currency, account.Currency)
+
+	require.NotZero(t, account.ID)
+	require.NotZero(t, account.CreatedAt)
 }
