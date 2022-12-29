@@ -9,15 +9,16 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	_ "github.com/lib/pq"
+	"github.com/stretchr/testify/require"
+	"github.com/viniciusdsouza/simple-bank-api/util"
 )
 
 func TestCreateAccount(t *testing.T) {
 	cmd := CreateAccountParams{
-		Owner: "tom",
-		Balance: "100",
-		Currency: "BRL",
+		Owner: util.RandomOwner(),
+		Balance: util.RandomMoney(0.00, 999999.99),
+		Currency: util.RandomCurrency(),
 	}
 	account, err := testQueries.CreateAccount(context.Background(), cmd)
 	require.NoError(t, err)
